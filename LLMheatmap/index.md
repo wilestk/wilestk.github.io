@@ -1,12 +1,44 @@
 ---
 layout: default
-title: Attention Proximity
+title: LLM Attention Proximity Heatmaps
 ap_widget: true
 ---
 
-# Attention Proximity
+# LLM Attention Proximity Heatmaps
+
+Quantifying and Visualizing LLM Internals
+{: .page-subtitle }
+
+If you want to run Attention Proximity scoring on your own text, the source code is available on GitHub [here](https://github.com/wilestk/REPO_NAME_HERE).
 
 Large Language Models (LLMs) operate by breaking down input text into subcomponents called "tokens". LLMs then generate sophisticated linguistic responses to the input tokenset by iteratively predicting which token is next in the written sequence. An LLM stores polydimensional vector embeddings of each token in its context window and combinatorially compares N tokens via attention. A single attention head process results in an N x N vector-alignment comparison matrix accomplished by taking the scaled dot product between each token's query and key projections.
+
+---
+
+{::nomarkdown}
+<div id="ap-examples-intro"></div>
+<script>
+  APHeatmap.loadGallery('ap-examples-intro', [
+    { title: "What's in a Name",              url: '/LLMheatmap/AP_JSONS/whats_in_a_name.json' },
+    { title: "All the World's a Stage",       url: '/LLMheatmap/AP_JSONS/all_the_worlds_a_stage.json' },
+    { title: "Best of Times, Worst of Times", url: '/LLMheatmap/AP_JSONS/best_of_times_worst_of_times.json' },
+    { title: "Humpty Dumpty",                 url: '/LLMheatmap/AP_JSONS/humpty_dumpty.json' },
+    { title: "Haiku",                         url: '/LLMheatmap/AP_JSONS/haiku.json' },
+    { title: "Minute Cryptic",                url: '/LLMheatmap/AP_JSONS/minute_cryptic.json' },
+    { title: "Legal Clause",                  url: '/LLMheatmap/AP_JSONS/legal_clause.json' },
+    { title: "Corporate Email",               url: '/LLMheatmap/AP_JSONS/corpo-email.json' },
+    { title: "Python Mistake",                url: '/LLMheatmap/AP_JSONS/python_mistake.json' },
+    { title: "Lorem Ipsum",                   url: '/LLMheatmap/AP_JSONS/lorem_ipsum.json' },
+    { title: "Random Words",                  url: '/LLMheatmap/AP_JSONS/random_words.json' },
+    { title: "Horse Horse Horse Horse Horse", url: '/LLMheatmap/AP_JSONS/horse_horse_horse_horse_horse.json' },
+    { title: "One Hoarse in Horses",          url: '/LLMheatmap/AP_JSONS/one_hoarse_in_horses.json' },
+    { title: "Profanity",                     url: '/LLMheatmap/AP_JSONS/profanity.json' },
+    { title: "Keyboard Smash",                url: '/LLMheatmap/AP_JSONS/keyboard_smash.json' },
+  ]);
+</script>
+{:/nomarkdown}
+
+---
 
 Here, I've leveraged this internal architecture to generate a language quantification and visualization tool I call Attention Proximity, which intercepts these internal LLM combinatorial token relational maps and generates a quantifiable score for an input text selection. The LLM I'm using is Qwen3-8B, which has 32 attention heads per layer across 36 sequential transformer layers before outputting the result. From the final layer, I take all 32 heads' worth of matured token embeddings (Q and K projections) and generate a symmetrized NxN matrix of the average dot product relatedness of those projections:
 
