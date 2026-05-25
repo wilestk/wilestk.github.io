@@ -1,0 +1,401 @@
+/**
+ * ap-heatmap.css
+ * Styles for the AP Heatmap static widget.
+ * All selectors are scoped to .ap-heatmap-widget to avoid collisions.
+ *
+ * Designed for a dark-background Jekyll site (background ~#0a0a0a).
+ * No external dependencies.
+ */
+
+/* ── Widget root ─────────────────────────────────────────────────────────── */
+.ap-heatmap-widget {
+  display:         flex;
+  flex-direction:  column;
+  gap:             8px;
+  font-family:     'Geist', system-ui, -apple-system, sans-serif;
+  font-size:       14px;
+  color:           #ededed;
+  background:      #111111;
+  border:          1px solid #222222;
+  border-radius:   12px;
+  padding:         14px 16px;
+  box-sizing:      border-box;
+}
+
+/* ── Controls bar ────────────────────────────────────────────────────────── */
+.aphm-controls {
+  display:     flex;
+  align-items: center;
+  flex-wrap:   wrap;
+  gap:         6px;
+}
+
+/* Metric toggle tabs */
+.aphm-tab {
+  appearance:       none;
+  -webkit-appearance: none;
+  font-family:      inherit;
+  font-size:        13px;
+  font-weight:      500;
+  color:            #999999;
+  background:       transparent;
+  border:           1px solid #333333;
+  border-radius:    6px;
+  padding:          4px 12px;
+  cursor:           pointer;
+  transition:       background 120ms, border-color 120ms, color 120ms;
+  user-select:      none;
+}
+.aphm-tab:hover {
+  background:    #1a1a1a;
+  border-color:  #555555;
+  color:         #ededed;
+}
+.aphm-tab--active {
+  background:    #1a1a1a;
+  border-color:  #aaaaaa;
+  color:         #ededed;
+}
+
+/* Color scheme dropdown + gallery select (shared base styles) */
+.aphm-select,
+.aphm-gallery-select {
+  appearance:       none;
+  -webkit-appearance: none;
+  font-family:      inherit;
+  font-size:        13px;
+  color:            #ededed;
+  background:       #1a1a1a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E") no-repeat right 8px center;
+  background-size:  10px 6px;
+  border:           1px solid #333333;
+  border-radius:    6px;
+  padding:          4px 28px 4px 10px;
+  cursor:           pointer;
+  outline:          none;
+  transition:       border-color 120ms;
+}
+.aphm-select:hover,  .aphm-gallery-select:hover  { border-color: #555555; }
+.aphm-select:focus,  .aphm-gallery-select:focus  { border-color: #777777; }
+
+/* Scalar pills */
+.aphm-pills {
+  display:     flex;
+  align-items: center;
+  gap:         6px;
+  margin-left: auto;
+  flex-wrap:   wrap;
+}
+.aphm-pill {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           5px;
+  background:    #1a1a1a;
+  border:        1px solid #2a2a2a;
+  border-radius: 20px;
+  padding:       3px 10px;
+  font-size:     12px;
+  white-space:   nowrap;
+}
+.aphm-pill-label {
+  color:       #666666;
+  font-weight: 500;
+}
+.aphm-pill-val {
+  color:       #ededed;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Distribution chart ──────────────────────────────────────────────────── */
+.aphm-dist-wrapper {
+  background:    #141414;
+  border:        1px solid #222222;
+  border-radius: 8px;
+  overflow:      hidden;
+}
+
+/* ── Wide reset buttons ──────────────────────────────────────────────────── */
+.aphm-wide-btn {
+  appearance:       none;
+  -webkit-appearance: none;
+  font-family:      inherit;
+  font-size:        13px;
+  font-weight:      500;
+  color:            #ededed;
+  background:       transparent;
+  border:           1px solid #333333;
+  border-radius:    8px;
+  padding:          8px 0;
+  width:            100%;
+  cursor:           pointer;
+  transition:       background 150ms, border-color 150ms;
+  user-select:      none;
+}
+.aphm-wide-btn:hover {
+  background:   #1a1a1a;
+  border-color: #555555;
+}
+.aphm-wide-btn:disabled {
+  color:        #444444;
+  border-color: #2a2a2a;
+  cursor:       default;
+}
+.aphm-wide-btn:disabled:hover {
+  background:   transparent;
+  border-color: #2a2a2a;
+}
+
+/* ── Heat text box ───────────────────────────────────────────────────────── */
+.aphm-heatbox {
+  background:    #141414;
+  border:        1px solid #222222;
+  border-radius: 8px;
+  padding:       14px 16px;
+  line-height:   1.8;
+  font-size:     15px;
+  cursor:        default;
+}
+
+/* ── Lines & chips ───────────────────────────────────────────────────────── */
+.aphm-line {
+  display:   flex;
+  flex-wrap: nowrap;
+}
+
+.aphm-chip {
+  display:            inline;
+  white-space:        pre;
+  border:             2px solid rgba(255,255,255,0.12);
+  border-radius:      4px;
+  color:              white;
+  font-weight:        normal;
+  text-shadow:        0 0 2px rgba(0,0,0,0.9);
+  cursor:             pointer;
+  transition:         border-color 120ms ease;
+  user-select:        none;
+  padding-top:        0;
+  padding-bottom:     0;
+  box-sizing:         content-box;
+  /* backgroundColor set via JS — use background-color (not background shorthand)
+     so the CSS class's background-image for marching ants is not clobbered */
+}
+.aphm-chip:hover {
+  border-color: rgba(255,255,255,0.75);
+}
+
+/* Bin-highlight from hovering the distribution chart */
+.aphm-chip--bin-highlight {
+  border-color: rgba(255,255,255,0.90) !important;
+}
+
+/* ── Marching-ants selection ─────────────────────────────────────────────── */
+@keyframes aphm-march {
+  to {
+    background-position:
+      16px 0%,
+      -16px 100%,
+      0% -16px,
+      100% 16px;
+  }
+}
+
+.aphm-chip--selected {
+  background-image:
+    linear-gradient(90deg, rgba(255,255,255,0.85) 50%, transparent 50%),
+    linear-gradient(90deg, rgba(255,255,255,0.85) 50%, transparent 50%),
+    linear-gradient(0deg,  rgba(255,255,255,0.85) 50%, transparent 50%),
+    linear-gradient(0deg,  rgba(255,255,255,0.85) 50%, transparent 50%);
+  background-repeat:   repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size:     8px 2px, 8px 2px, 2px 8px, 2px 8px;
+  background-position: 0% 0%, 0% 100%, 0% 0%, 100% 0%;
+  animation:           aphm-march 0.5s linear infinite;
+  border-color:        transparent !important;
+  /* background-color set to 'transparent' via JS so heat color shows through gaps */
+}
+
+/* ── Range controls ─────────────────────────────────────────────────────── */
+.aphm-range-controls {
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+  padding:     6px 10px;
+  background:  #111111;
+  border:      1px solid #222222;
+  border-radius: 8px;
+  font-size:   12px;
+  color:       #666666;
+}
+
+.aphm-range-label {
+  color:       #666666;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.aphm-scrubber {
+  display:              inline-flex;
+  align-items:          center;
+  justify-content:      center;
+  gap:                  3px;
+  cursor:               ew-resize;
+  user-select:          none;
+  background:           #1a1a1a;
+  border:               1px solid #222222;
+  border-radius:        4px;
+  padding:              3px 8px;
+  min-width:            52px;
+  text-align:           center;
+  color:                #ededed;
+  font-variant-numeric: tabular-nums;
+  transition:           border-color 120ms;
+}
+.aphm-scrubber:hover    { border-color: #444444; }
+.aphm-scrubber--auto    { color: #555555; }
+
+.aphm-range-auto-label {
+  display:     flex;
+  align-items: center;
+  gap:         5px;
+  color:       #999999;
+  cursor:      pointer;
+  margin-left: auto;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ── Gallery navigator ───────────────────────────────────────────────────── */
+.aphm-gallery-nav {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+  padding:     6px 0;
+}
+
+.aphm-gallery-btn {
+  appearance:         none;
+  -webkit-appearance: none;
+  font-family:        inherit;
+  font-size:          20px;
+  font-weight:        500;
+  color:              #999999;
+  background:         transparent;
+  border:             1px solid #333333;
+  border-radius:      8px;
+  padding:            10px 20px;
+  cursor:             pointer;
+  transition:         background 120ms, border-color 120ms, color 120ms;
+  user-select:        none;
+  white-space:        nowrap;
+  line-height:        1;
+}
+.aphm-gallery-btn:hover {
+  background:   #1a1a1a;
+  border-color: #555555;
+  color:        #ededed;
+}
+
+/* Gallery select overrides on top of shared .aphm-select base */
+.aphm-gallery-select {
+  flex:        1;
+  text-align:  center;
+  font-size:   20px;
+  padding:     10px 36px 10px 16px;
+  border-radius: 8px;
+}
+
+/* ── Status bar ──────────────────────────────────────────────────────────── */
+.aphm-status-bar {
+  font-size:  12px;
+  color:      #666666;
+  padding:    2px 2px;
+  min-height: 18px;
+}
+
+/* ── Distribution area (left panel + right SVG) ──────────────────────────── */
+.aphm-dist-area {
+  display:   flex;
+  flex-direction: row;
+  gap:       0;
+  background:    #141414;
+  border:        1px solid #222222;
+  border-radius: 8px;
+  overflow:      hidden;
+}
+
+.aphm-dist-left {
+  display:        flex;
+  flex-direction: column;
+  gap:            10px;
+  padding:        10px 12px;
+  min-width:      120px;
+  border-right:   1px solid #222222;
+  flex-shrink:    0;
+}
+
+.aphm-dist-right {
+  flex:       1;
+  min-width:  0;
+  padding:    6px 8px 4px 4px;
+  display:    flex;
+  align-items: stretch;
+}
+
+.aphm-dist-right svg {
+  width:  100%;
+  height: auto;
+}
+
+/* Label above each control in the dist left panel */
+.aphm-dist-label {
+  font-size:   11px;
+  color:       #555555;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Wrapper: stacks label on top of control */
+.aphm-dist-row {
+  display:        flex;
+  flex-direction: column;
+  gap:            4px;
+}
+
+/* Auto checkbox row */
+.aphm-auto-row {
+  display:    flex;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.aphm-auto-row label {
+  display:     flex;
+  align-items: center;
+  gap:         5px;
+  cursor:      pointer;
+}
+
+/* ── Scrubber chevrons ────────────────────────────────────────────────────── */
+.aphm-scrubber-chev {
+  color:       rgba(255,255,255,0.25);
+  font-size:   11px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Disabled scrubber state (when Auto is checked) */
+.aphm-scrubber--disabled {
+  opacity:        0.35;
+  cursor:         default !important;
+  pointer-events: none;
+}
+
+/* ── Loading / error states ──────────────────────────────────────────────── */
+.aphm-loading,
+.aphm-error {
+  padding:   20px;
+  font-size: 13px;
+  color:     #666666;
+  text-align: center;
+}
+.aphm-error { color: #e05c5c; }
