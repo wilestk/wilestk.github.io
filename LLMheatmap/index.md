@@ -33,18 +33,19 @@ ap_widget: true
 
 ---
 
-
 # LLM Attention Proximity Heatmaps
 
 ## Quantifying and Visualizing LLM Internals
 {: .page-subtitle }
 
 ### Intro
+
 Large Language Models (LLMs) operate by breaking down input text into subcomponents called "tokens". LLMs then generate sophisticated linguistic responses to the input tokenset by iteratively predicting which token is next in the written sequence. An LLM stores polydimensional vector embeddings of each token in its context window and combinatorially compares N tokens via attention. A single attention head process results in an N x N vector-alignment comparison matrix accomplished by taking the scaled dot product between each token's query and key projections.
 
 ---
 
 ### Methodology
+
 Here, I've leveraged this internal architecture to generate a language quantification and visualization tool I call Attention Proximity, which intercepts these internal LLM combinatorial token relational maps and generates a quantifiable score for an input text selection. The LLM I'm using is Qwen3-8B, which has 32 attention heads per layer across 36 sequential transformer layers before outputting the result. From the final layer, I take all 32 heads' worth of matured token embeddings (Q and K projections) and generate a symmetrized NxN matrix of the average dot product relatedness of those projections:
 
 $$
@@ -80,6 +81,7 @@ $$ \text{iAPE}_i = -\sum_{j \neq i} \hat{p}_{ij} \log \hat{p}_{ij}, \qquad \hat{
 $$ \text{APE} = \frac{1}{N} \sum_{i=1}^{N} \text{iAPE}_i $$
 
 ---
+
 ### Results
 
 The idea behind Attention Proximity is that more densely meaningful texts will yield higher internal interrelatedness as represented by LLM internals, and therefore higher AP.
