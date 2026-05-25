@@ -32,5 +32,15 @@ title: Kevin Wiles
     </div>
   </a>
 
+  <a href="https://ntwiles.itch.io/braindala" class="project-card" target="_blank" rel="noopener">
+    <div class="project-card-header">
+      <div class="project-card-title">Braindala</div>
+      <div class="project-card-subtitle">Godot Wild Jam #93 — #2/204 Originality, #29 Overall</div>
+    </div>
+    <div class="project-card-image">
+      <img src="/neurlcar/images/braindala.png" alt="Braindala">
+    </div>
+  </a>
+
 </div>
 {:/nomarkdown}

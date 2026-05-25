@@ -69,23 +69,22 @@ hr {
 
 /* ── Project cards (splash page) ───────────────────────────────────────────── */
 .project-cards {
-  display:        flex;
-  flex-direction: row;
-  gap:            24px;
-  margin-top:     40px;
+  display:               grid;
+  grid-template-columns: 750px 750px;
+  gap:                   24px;
+  margin-top:            40px;
   /* Break out of main's max-width and center on the viewport */
-  position:       relative;
-  left:           50%;
-  transform:      translateX(-50%);
-  width:          max-content;
+  position:              relative;
+  left:                  50%;
+  transform:             translateX(-50%);
+  width:                 max-content;
 }
 
 .project-card {
   display:         block;
   text-decoration: none;
   color:           inherit;
-  width:           750px;
-  flex-shrink:     0;
+  min-width:       0;
 }
 
 .project-card-header {
