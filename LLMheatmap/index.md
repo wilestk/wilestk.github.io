@@ -4,14 +4,7 @@ title: LLM Attention Proximity Heatmaps
 ap_widget: true
 ---
 
-# LLM Attention Proximity Heatmaps
-
-Quantifying and Visualizing LLM Internals
-{: .page-subtitle }
-
-If you want to run Attention Proximity scoring on your own text, the source code is available on GitHub [here](https://github.com/wilestk/REPO_NAME_HERE).
-
-Large Language Models (LLMs) operate by breaking down input text into subcomponents called "tokens". LLMs then generate sophisticated linguistic responses to the input tokenset by iteratively predicting which token is next in the written sequence. An LLM stores polydimensional vector embeddings of each token in its context window and combinatorially compares N tokens via attention. A single attention head process results in an N x N vector-alignment comparison matrix accomplished by taking the scaled dot product between each token's query and key projections.
+*If you want to run Attention Proximity scoring on your own text, the source code is available on GitHub [here](https://github.com/wilestk/REPO_NAME_HERE).*
 
 ---
 
@@ -40,6 +33,18 @@ Large Language Models (LLMs) operate by breaking down input text into subcompone
 
 ---
 
+
+# LLM Attention Proximity Heatmaps
+
+## Quantifying and Visualizing LLM Internals
+{: .page-subtitle }
+
+### Intro
+Large Language Models (LLMs) operate by breaking down input text into subcomponents called "tokens". LLMs then generate sophisticated linguistic responses to the input tokenset by iteratively predicting which token is next in the written sequence. An LLM stores polydimensional vector embeddings of each token in its context window and combinatorially compares N tokens via attention. A single attention head process results in an N x N vector-alignment comparison matrix accomplished by taking the scaled dot product between each token's query and key projections.
+
+---
+
+### Methodology
 Here, I've leveraged this internal architecture to generate a language quantification and visualization tool I call Attention Proximity, which intercepts these internal LLM combinatorial token relational maps and generates a quantifiable score for an input text selection. The LLM I'm using is Qwen3-8B, which has 32 attention heads per layer across 36 sequential transformer layers before outputting the result. From the final layer, I take all 32 heads' worth of matured token embeddings (Q and K projections) and generate a symmetrized NxN matrix of the average dot product relatedness of those projections:
 
 $$
@@ -74,6 +79,9 @@ $$ \text{iAPE}_i = -\sum_{j \neq i} \hat{p}_{ij} \log \hat{p}_{ij}, \qquad \hat{
 
 $$ \text{APE} = \frac{1}{N} \sum_{i=1}^{N} \text{iAPE}_i $$
 
+---
+### Results
+
 The idea behind Attention Proximity is that more densely meaningful texts will yield higher internal interrelatedness as represented by LLM internals, and therefore higher AP.
 
 I've tested this hypothesis against the [OneStopEnglish](https://huggingface.co/datasets/) dataset, a collection of 189 Guardian newspaper articles each rewritten at three reading levels (Elementary, Intermediate, Advanced). The dataset was pared down to 186 after quality control, yielding 558 texts across matched triplets.
@@ -87,6 +95,10 @@ As hypothesized, AP increases as reading level increases, indicating more intern
 Interestingly, the APE of both Elementary and Advanced writing is higher than the entropy of intermediate writing, implying that Advanced writing has both a richer and a wider internal relatedness than Intermediate writing. Beginner writing has a higher internal attention spread than Intermediate writing, which could mean that Intermediate writing accomplishes its increase in relational complexity primarily by reigning in lexical ambiguity and lexical "promiscuity" or vagueness. Increasing the writing level from Intermediate to Advanced may then require reintroducing more nuance into the lexical structure.
 
 This mirrors common wisdom such as "If you can't explain something simply, you don't know it well enough". Ironic, since this article is going to be very difficult to parse for the average person!
+
+---
+
+### Visualization
 
 The most fun part of this project was creating a visualization tool for AP.
 
