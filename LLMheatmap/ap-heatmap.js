@@ -359,6 +359,12 @@
     var lastHeatMin    = 0;
     var lastHeatMax    = 1;
 
+    // Drag selection state
+    var mouseIsDown   = false;
+    var dragStart     = null;
+    var dragCurrent   = null;
+    var dragCommitted = false;
+
     // Precomputed derived data
     var tokens      = data.tokens;
     var charSpans   = data.char_spans;
@@ -616,21 +622,52 @@
           chip.title       = tokens[i];
           chip.textContent = displayTexts[i];
 
-          chip.addEventListener('mousedown', function(e) { e.preventDefault(); });
+          chip.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            mouseIsDown   = true;
+            dragStart     = parseInt(chip.dataset.idx);
+            dragCurrent   = dragStart;
+            dragCommitted = false;
+          });
 
           chip.addEventListener('mouseenter', function() {
-            var v = lastHeatValues[parseInt(chip.dataset.idx)];
-            if (v === null || v === undefined) return;
-            var bin = getBinForValue(v, lastHeatMin, lastHeatMax);
-            currentBarEls.forEach(function(b) {
-              b.el.setAttribute('fill', b.idx === bin ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.18)');
-            });
+            var idx = parseInt(chip.dataset.idx);
+            // Histogram highlight on hover
+            var v = lastHeatValues[idx];
+            if (v !== null && v !== undefined) {
+              var bin = getBinForValue(v, lastHeatMin, lastHeatMax);
+              currentBarEls.forEach(function(b) {
+                b.el.setAttribute('fill', b.idx === bin ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.18)');
+              });
+            }
+            // Drag preview
+            if (mouseIsDown && dragStart !== null && idx !== dragStart) {
+              dragCurrent = idx;
+              var lo = Math.min(dragStart, idx);
+              var hi = Math.max(dragStart, idx);
+              var rangeVal = Math.max(lastHeatMax - lastHeatMin, 1e-10);
+              chipEls.forEach(function(c) {
+                var inRange = c.idx >= lo && c.idx <= hi;
+                c.el.classList.toggle('aphm-chip--selected', inRange);
+                if (inRange) {
+                  c.el.style.backgroundColor = 'transparent';
+                  c.el.style.opacity = '';
+                } else {
+                  var cv = lastHeatValues[c.idx];
+                  var isNull = cv === null || cv === undefined;
+                  var norm = isNull ? 0 : Math.max(0, Math.min(1, (cv - lastHeatMin) / rangeVal));
+                  c.el.style.backgroundColor = (isNull || selectedSet.has(c.idx)) ? 'transparent' : heatToColor(norm, scheme, alpha);
+                  c.el.style.opacity = (isNull && !selectedSet.has(c.idx)) ? '0.25' : '';
+                }
+              });
+            }
           });
           chip.addEventListener('mouseleave', function() {
             refreshBarHighlights();
           });
 
           chip.addEventListener('click', function(e) {
+            if (dragCommitted) { dragCommitted = false; return; }
             var idx     = parseInt(chip.dataset.idx);
             var isShift = e.shiftKey;
             var isCtrl  = e.ctrlKey || e.metaKey;
@@ -672,6 +709,23 @@
       });
     }
 
+    // ── Global drag mouseup ──────────────────────────────────────────────────
+
+    window.addEventListener('mouseup', function() {
+      if (!mouseIsDown) return;
+      mouseIsDown = false;
+      if (dragStart !== null && dragCurrent !== null && dragStart !== dragCurrent) {
+        var lo = Math.min(dragStart, dragCurrent);
+        var hi = Math.max(dragStart, dragCurrent);
+        selectedSet   = new Set(Array.from({ length: hi - lo + 1 }, function(_, k) { return lo + k; }));
+        chipAnchor    = dragStart;
+        dragCommitted = true;
+        render();
+      }
+      dragStart   = null;
+      dragCurrent = null;
+    });
+
     // ── Histogram highlight helpers ─────────────────────────────────────────
 
     function getBinForValue(v, min, max) {
@@ -687,7 +741,9 @@
       }
       var selBins = new Set();
       selectedSet.forEach(function(idx) {
+        // Selected chips are null in relative mode — fall back to base AP value
         var v = lastHeatValues[idx];
+        if (v === null || v === undefined) v = data.ap[idx];
         if (v !== null && v !== undefined) {
           selBins.add(getBinForValue(v, lastHeatMin, lastHeatMax));
         }
@@ -764,7 +820,7 @@
         var norm      = isNull ? 0 : Math.max(0, Math.min(1, (v - heatMin) / rangeVal));
         c.el.style.backgroundColor = (isSelected || isNull) ? 'transparent' : heatToColor(norm, scheme, alpha);
         c.el.classList.toggle('aphm-chip--selected', isSelected);
-        c.el.style.opacity = isNull ? '0.25' : '';
+        c.el.style.opacity = (isNull && !isSelected) ? '0.25' : '';
       });
 
       // Status bar
@@ -888,12 +944,26 @@
 
       var url = examples[index].url;
 
+      // Freeze height before clearing so the page doesn't jump
+      function freezeHeight() {
+        var h = contentDiv.offsetHeight;
+        if (h > 0) contentDiv.style.minHeight = h + 'px';
+      }
+      function releaseHeight() {
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() { contentDiv.style.minHeight = ''; });
+        });
+      }
+
       if (cache.has(url)) {
+        freezeHeight();
         contentDiv.innerHTML = '';
         createWidget(contentDiv, cache.get(url));
+        releaseHeight();
         return;
       }
 
+      freezeHeight();
       contentDiv.innerHTML = '<div class="aphm-loading">Loading…</div>';
 
       fetch(url)
@@ -904,12 +974,15 @@
         .then(function(data) {
           cache.set(url, data);
           if (currentIndex === index) {
+            freezeHeight();
             contentDiv.innerHTML = '';
             createWidget(contentDiv, data);
+            releaseHeight();
           }
         })
         .catch(function(err) {
           if (currentIndex === index) {
+            contentDiv.style.minHeight = '';
             contentDiv.innerHTML =
               '<div class="aphm-error">Failed to load ' + url + ': ' + err.message + '</div>';
           }
