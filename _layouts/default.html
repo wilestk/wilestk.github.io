@@ -23,5 +23,26 @@ window.MathJax = {
   <main>
     {{ content }}
   </main>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Lightbox for article images — skip widget, project card, and lightbox images
+  document.querySelectorAll('main img').forEach(function (img) {
+    if (img.closest('.ap-heatmap-widget') || img.closest('.project-card-image') || img.closest('.img-lightbox-overlay')) return;
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', function () {
+      var overlay = document.createElement('div');
+      overlay.className = 'img-lightbox-overlay';
+      var big = document.createElement('img');
+      big.src = img.src;
+      overlay.appendChild(big);
+      overlay.addEventListener('click', function () { document.body.removeChild(overlay); });
+      document.addEventListener('keydown', function esc(e) {
+        if (e.key === 'Escape') { document.body.removeChild(overlay); document.removeEventListener('keydown', esc); }
+      });
+      document.body.appendChild(overlay);
+    });
+  });
+});
+</script>
 </body>
 </html>

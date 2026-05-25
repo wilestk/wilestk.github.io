@@ -8,6 +8,8 @@ ap_widget: true
 
 ![AP Heatmap splash](images/splash.png)
 
+*This image is from the interactive visualization widget [at the bottom of the page](#ap-examples) if you want to scroll down and check that out before you read the article!*
+
 ---
 
 # LLM Attention Proximity Heatmaps
