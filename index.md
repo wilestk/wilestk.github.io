@@ -5,9 +5,9 @@ title: Kevin Wiles
 
 # Kevin Wiles
 
----
+## *My Projects*
 
-## My projects
+---
 
 {::nomarkdown}
 <div class="project-cards">

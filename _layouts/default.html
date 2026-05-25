@@ -25,20 +25,41 @@ window.MathJax = {
   </main>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  // Lightbox for article images — skip widget, project card, and lightbox images
   document.querySelectorAll('main img').forEach(function (img) {
-    if (img.closest('.ap-heatmap-widget') || img.closest('.project-card-image') || img.closest('.img-lightbox-overlay')) return;
+    if (img.closest('.ap-heatmap-widget') || img.closest('.project-card-image')) return;
     img.style.cursor = 'zoom-in';
     img.addEventListener('click', function () {
       var overlay = document.createElement('div');
-      overlay.className = 'img-lightbox-overlay';
+      overlay.style.position   = 'fixed';
+      overlay.style.top        = '0';
+      overlay.style.right      = '0';
+      overlay.style.bottom     = '0';
+      overlay.style.left       = '0';
+      overlay.style.background = 'rgba(0,0,0,0.92)';
+      overlay.style.display    = 'flex';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.zIndex    = '9999';
+      overlay.style.cursor    = 'zoom-out';
+
       var big = document.createElement('img');
-      big.src = img.src;
-      overlay.appendChild(big);
-      overlay.addEventListener('click', function () { document.body.removeChild(overlay); });
+      big.src            = img.src;
+      big.style.maxWidth  = '90vw';
+      big.style.maxHeight = '90vh';
+      big.style.width     = 'auto';
+      big.style.height    = 'auto';
+      big.style.margin    = '0';
+      big.style.boxShadow = '0 0 60px rgba(0,0,0,0.8)';
+      // Prevent clicks on the image from bubbling to overlay twice
+      big.addEventListener('click', function (e) { e.stopPropagation(); });
+
+      function close() { if (overlay.parentNode) document.body.removeChild(overlay); }
+      overlay.addEventListener('click', close);
       document.addEventListener('keydown', function esc(e) {
-        if (e.key === 'Escape') { document.body.removeChild(overlay); document.removeEventListener('keydown', esc); }
+        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
       });
+
+      overlay.appendChild(big);
       document.body.appendChild(overlay);
     });
   });
