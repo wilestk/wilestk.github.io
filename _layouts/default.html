@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', function () {
       big.style.height    = 'auto';
       big.style.margin    = '0';
       big.style.boxShadow = '0 0 60px rgba(0,0,0,0.8)';
-      // Prevent clicks on the image from bubbling to overlay twice
-      big.addEventListener('click', function (e) { e.stopPropagation(); });
+      big.style.cursor    = 'zoom-out';
+      big.addEventListener('click', function (e) { e.stopPropagation(); close(); });
 
       function close() { if (overlay.parentNode) document.body.removeChild(overlay); }
       overlay.addEventListener('click', close);
