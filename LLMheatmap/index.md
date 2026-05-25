@@ -86,7 +86,7 @@ The most fun part of this project was creating a visualization tool for AP.
 
 I've provided a bunch of examples here for you to play with the tool, and also an [open source repo](https://github.com/wilestk/attention-proximity-app) if you want to examine the heatmaps of any arbitrary text on your local computer.
 
-Click on individual tokens to subset the heatmap by token. Shift click another token while one is selected to select all intervening tokens. Ctrl click to add single tokens to your selection.
+Click on individual tokens to subset the heatmap by token. Shift click another token while one is selected to select all intervening tokens. Ctrl click to add single tokens to your selection. Drag the axes to recontextualize the heatmap (for example if there's an outlier).
 
 ---
 
