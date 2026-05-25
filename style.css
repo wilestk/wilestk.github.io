@@ -45,16 +45,6 @@ hr {
   margin: 40px 0;
 }
 
-/* ── Page subtitle (below h1) ──────────────────────────────────────────────── */
-.page-subtitle {
-  text-align:    center;
-  color:         #777777;
-  font-size:     16px;
-  margin-top:    -16px;
-  margin-bottom: 32px;
-  font-style:    italic;
-  line-height:   1.4;
-}
 
 /* ── Project cards (splash page) ───────────────────────────────────────────── */
 .project-cards {
@@ -62,6 +52,9 @@ hr {
   flex-direction: column;
   gap:            40px;
   margin-top:     40px;
+  max-width:      66.67%;
+  margin-left:    auto;
+  margin-right:   auto;
 }
 
 .project-card {
@@ -110,7 +103,7 @@ hr {
   height:     100%;
   object-fit: cover;
   transform:  scale(1.2);
-  filter:     saturate(25%);
+  filter:     saturate(12.5%);
   transition: filter 200ms ease;
   margin:     0;  /* override global img centering */
   display:    block;

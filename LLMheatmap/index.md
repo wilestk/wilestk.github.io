@@ -6,37 +6,13 @@ ap_widget: true
 
 *If you want to run Attention Proximity scoring on your own text, the source code is available on GitHub [here](https://github.com/wilestk/REPO_NAME_HERE).*
 
----
-
-{::nomarkdown}
-<div id="ap-examples-intro"></div>
-<script>
-  APHeatmap.loadGallery('ap-examples-intro', [
-    { title: "What's in a Name",              url: '/LLMheatmap/AP_JSONS/whats_in_a_name.json' },
-    { title: "All the World's a Stage",       url: '/LLMheatmap/AP_JSONS/all_the_worlds_a_stage.json' },
-    { title: "Best of Times, Worst of Times", url: '/LLMheatmap/AP_JSONS/best_of_times_worst_of_times.json' },
-    { title: "Humpty Dumpty",                 url: '/LLMheatmap/AP_JSONS/humpty_dumpty.json' },
-    { title: "Haiku",                         url: '/LLMheatmap/AP_JSONS/haiku.json' },
-    { title: "Minute Cryptic",                url: '/LLMheatmap/AP_JSONS/minute_cryptic.json' },
-    { title: "Legal Clause",                  url: '/LLMheatmap/AP_JSONS/legal_clause.json' },
-    { title: "Corporate Email",               url: '/LLMheatmap/AP_JSONS/corpo-email.json' },
-    { title: "Python Mistake",                url: '/LLMheatmap/AP_JSONS/python_mistake.json' },
-    { title: "Lorem Ipsum",                   url: '/LLMheatmap/AP_JSONS/lorem_ipsum.json' },
-    { title: "Random Words",                  url: '/LLMheatmap/AP_JSONS/random_words.json' },
-    { title: "Horse Horse Horse Horse Horse", url: '/LLMheatmap/AP_JSONS/horse_horse_horse_horse_horse.json' },
-    { title: "One Hoarse in Horses",          url: '/LLMheatmap/AP_JSONS/one_hoarse_in_horses.json' },
-    { title: "Profanity",                     url: '/LLMheatmap/AP_JSONS/profanity.json' },
-    { title: "Keyboard Smash",                url: '/LLMheatmap/AP_JSONS/keyboard_smash.json' },
-  ]);
-</script>
-{:/nomarkdown}
+![AP Heatmap splash](images/splash.png)
 
 ---
 
 # LLM Attention Proximity Heatmaps
 
 ## Quantifying and Visualizing LLM Internals
-{: .page-subtitle }
 
 ### Intro
 

@@ -4,9 +4,7 @@ title: Kevin Wiles
 ---
 
 # Kevin Wiles
-
-My Projects
-{: .page-subtitle }
+## My projects
 
 {::nomarkdown}
 <div class="project-cards">
@@ -27,7 +25,7 @@ My Projects
       <div class="project-card-subtitle">Quantifying and Visualizing LLM Internals</div>
     </div>
     <div class="project-card-image">
-      <img src="/LLMheatmap/images/heatmap.png" alt="LLM Attention Proximity Heatmaps">
+      <img src="/LLMheatmap/images/splash.png" alt="LLM Attention Proximity Heatmaps">
     </div>
   </a>
 
